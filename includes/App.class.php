@@ -679,6 +679,8 @@ class App{
 					"icon" => $plan->icon,
 					"urls" => $plan->numurls,
 					"clicks" => $plan->numclicks,
+					"credits_per_click" => $plan->credits_per_click,
+					"cookie_expires_in_days" => $plan->cookie_expires_in_days,
 					"permission" => json_decode($plan->permission)					
 				];
 
@@ -697,6 +699,8 @@ class App{
 					"price" => $plan->price_monthly,
 					"urls" => $plan->numurls,
 					"clicks" => $plan->numclicks,
+					"credits_per_click" => $plan->credits_per_click,
+					"cookie_expires_in_days" => $plan->cookie_expires_in_days,
 					"permission" => json_decode($plan->permission)
 				];
 				$yearly[] = [
@@ -709,6 +713,8 @@ class App{
 					"discount" => $discountAmount,
 					"urls" => $plan->numurls,
 					"clicks" => $plan->numclicks,
+					"credits_per_click" => $plan->credits_per_click,
+					"cookie_expires_in_days" => $plan->cookie_expires_in_days,
 					"permission" => json_decode($plan->permission)
 				];				
 			}

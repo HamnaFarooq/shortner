@@ -1,363 +1,381 @@
-<?php  
-/**
- * ====================================================================================
- *                           PREMIUM URL SHORTENER (c) KBRmedia
- * ----------------------------------------------------------------------------------
- * @copyright This software is exclusively sold at CodeCanyon.net. If you have downloaded this
- *  from another site or received it from someone else than me, then you are engaged
- *  in an illegal activity. You must delete this software immediately or buy a proper
- *  license from http://gempixel.com/buy/short.
- *
- *  Thank you for your cooperation and don't hesitate to contact me if anything :)
- * ====================================================================================
- *
- * @author KBRmedia (http://gempixel.com)
- * @link http://gempixel.com 
- * @package Premium URL Shortener
- */	
-	include("includes/config.php");
-	
-	$step = 1;
-	if(isset($_GET["run"]) && $_GET["run"] == "true"){
-		$step = 2;
-	}	
-	$message="";
-	if(isset($_GET["step"]) && is_numeric($_GET["step"]) && $_GET["step"]<3){
-		$step=$_GET["step"];
-	}
-	if($step==2){		
-    $db = new PDO("mysql:host=".$dbinfo["host"].";dbname=".$dbinfo["db"]."", $dbinfo["user"], $dbinfo["password"]);
-    $query=get_query($dbinfo);
-		if($query){
-			foreach ($query as $q) {
-			 	$db->query($q);
-			} 
-		}	
-		header("Location: index.php"); 
-		$_SESSION["msg"]="success::Database was successfully updated. Enjoy the new features!";
-			if(file_exists("main.zip")){
-				unlink('main.zip');
-			}
-			if(file_exists("install.php")){
-				unlink('install.php');
-			}
-		unlink(__FILE__);
-	}
-?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Premium URL Shortener Updater</title>
-	<style type="text/css">
-		body{background-color: rgb(237,242,247);font-family:Helvetica, Arial;width:860px;line-height:25px;font-size:13px;margin:0 auto;}a{color:#009ee4;font-weight:700;text-decoration:none;}a:hover{color:#000;text-decoration:none;}.container{background:#fff;box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);border-radius:10px;display:block;overflow:hidden;margin:50px 0;}.container h1{font-size:18px;display:block;border-bottom:1px solid #eee;margin:0!important;padding:20px 10px;}.container h2{color:#999;font-size:18px;margin:10px;}.container h3{background:#fff;border-bottom:1px solid #eee;border-radius:3px 0 0 0;text-align:center;margin:0;padding:20px  0;}.left{float:left;width:258px;}.right{float:left;width:599px;border-left:1px solid #eee;}.form{width:90%;display:block;padding:10px;}.form label{font-size:15px;font-weight:700;margin:5px 0;}.form label a{float:right;color:#009ee4;font:bold 12px Helvetica, Arial; padding-top: 5px;}.form .input{display:block;width:98%;height:15px;border:1px #ccc solid;font:bold 15px Helvetica, Arial;color:#aaa;border-radius:2px;box-shadow:inset 1px 1px 3px #ccc,0 0 0 3px #f8f8f8;margin:10px 0;padding:10px;}.form .input:focus{border:1px #73B9D9 solid;outline:none;color:#222;box-shadow:inset 1px 1px 3px #ccc,0 0 0 3px #DEF1FA;}.form .button{height:35px;}.button{background-color: #4f37ac;font-weight: 700;background-image: -moz-linear-gradient(0deg, #0854a9 0%, #4f37ac 100%);background-image: -webkit-linear-gradient(0deg, #0854a9 0%, #4f37ac 100%);width:90%;display:block;text-decoration:none;text-align:center;border-radius: 2px;color:#fff;font:15px Helvetica, Arial bold;cursor:pointer;border-radius:25px;margin:30px auto; padding:10px 0;border:0;}.button:active,.button:hover{background:#0069D2;color:#fff;}.content{color:#999;display:block;border-top:1px solid #eee;margin:10px 0;padding:10px;}li{color:#999;}li.current{color:#000;font-weight:700;}li span{float:right;margin-right:10px;font-size:11px;font-weight:700;color:#00B300;}.left > p{border-top:1px solid #eee;color:#999;font-size:12px;margin:0;padding:10px;}.left > p >a{color:#777;}.content > p{color:#222;font-weight:700;}span.ok{float:right;border-radius:3px;background:#00B300;color:#fff;padding:2px 10px;}span.fail{float:right;border-radius:3px;background:#B30000;color:#fff;padding:2px 10px;}span.warning{float:right;border-radius:3px;background:#D27900;color:#fff;padding:2px 10px;}.message{background:#1F800D;color:#fff;font:bold 15px Helvetica, Arial;border:1px solid #000;padding:10px;}.error{background:#980E0E;color:#fff;font:bold 15px Helvetica, Arial;border-bottom:1px solid #740C0C;border-top:1px solid #740C0C;margin:0;padding:10px;}.inner,.right > p{margin:10px;}	
-	</style>
-  </head>
-  <body>
-  	<div class="container">
-  		<div class="left">
-			<h3>Upgrading Database</h3>
-			<ol>
-				<li<?php echo ($step=="1")?" class='current'":""?>>Update Information <?php echo ($step>"1")?"<span>Complete</span>":"" ?></li>				
-				<li<?php echo ($step=="2")?" class='current'":""?>>Update Complete</li>
-			</ol>
-			<p>
-				<a href="https://gempixel.com/" target="_blank">Home</a> | 
-				<a href="https://gempixel.com/products" target="_blank">Products</a> | 
-				<a href="https://support.gempixel.com/" target="_blank">Support</a><br>
-				<p>2012-<?php echo date("Y") ?> &copy; <a href="https://gempixel.com" target="_blank">GemPixel</a><br>All Rights Reserved.</p>
-			</p>
-  		</div>
-  		<div class="right">
-				<h1>Upgrading Premium URL Shortener to <?php echo _VERSION ?></h1> 
-				<p>
-					You are about to upgrade this software to version <strong><?php echo _VERSION ?></strong>. Please note that this will only update your database and <strong>not your files</strong>. It is strongly recommended that you first backup your database then your existing files in case something unexpected occurs. 
-				</p>
-				<p>
-					Version <?php echo _VERSION ?> adds many new functionality including improvements in performance, features and security. For this reason, <strong>many files</strong> were updated. <strong>Please read</strong> the <a href="https://gemp.me/changelog" target="_blank">changelog</a> carefully in order to make sure the update is done as smoothly as possible. 
-				</p>			
-				<p>					
-					If you have made significant changes to the script and wish to keep those changes, <strong>do not update</strong> as this will completely overwrite the affected files. Also if you are happy with the current version, <strong>don't update</strong>. Otherwise, click the button below to proceed. <strong>Please make sure that this file is deleted at the end.</strong>
-				</p>
+<?php defined("APP") or die() ?>
+<section id="plan">
+  <div class="container">
+    <?php echo Main::message() ?>
+    <div class="text-center">
+      <h1><?php echo e("Simple Pricing") ?></h1>
+      <p><?php echo e("Transparent pricing for everyone. Always know what you will pay.") ?></p>
+      <br>
+      <div class="toggle-container cf">
+        <div class="switch-toggles">
+          <div class="monthly"><?php echo e("Monthly") ?></div>
+          <div class="yearly"><?php echo e("Yearly") ?></div>
+        </div>
+      </div>      
+    </div>    
+    <div id="price_tables">
+      <div class="monthly cf">
+        <?php foreach ($free as $plan): ?>
+          <div class="price-table">
+            <div class="table-inner text-center">              
+              <h3><?php echo e($plan["name"]) ?></h3>
+              <div class="phrase"><?php echo e($plan["description"]) ?></div>
+              <span class="price"><?php echo e("Free") ?></span>
+              <ul class="feature-list">
+                <li><?php echo e("Basic Features") ?></li>
+                <li><?php echo $plan["urls"] == "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
+                <li><?php echo $plan["clicks"] == "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
+                <?php if ($plan["permission"]->geo->enabled): ?>
+                  <li><?php echo e("Geotargeting"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->device->enabled): ?>
+                  <li><?php echo e("Device Targeting"); ?></li>
+                <?php endif ?>                
+                <?php if ($plan["permission"]->splash->enabled): ?>
+                  <li><?php echo ($plan["permission"]->splash->count == "0" ? e("Unlimited") : $plan["permission"]->splash->count)." ".e("Custom Splash Pages"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->overlay->enabled): ?>
+                  <li><?php echo ($plan["permission"]->overlay->count == "0" ? e("Unlimited") : $plan["permission"]->overlay->count)." ".e("Custom Overlay Pages"); ?></li>
+                <?php endif ?>         
+                <?php if ($plan["permission"]->pixels->enabled): ?>
+                  <li><?php echo ($plan["permission"]->pixels->count == "0" ? e("Unlimited") : $plan["permission"]->pixels->count)." ".e("Event Tracking"); ?></li>
+                <?php endif ?>    
+                <?php if ($plan["permission"]->team->enabled): ?>
+                  <li><?php echo ($plan["permission"]->team->count == "0" ? e("Unlimited") : $plan["permission"]->team->count)." ".e("Team Member"); ?></li>
+                <?php endif ?>                                
+                <?php if ($plan["permission"]->domain->enabled): ?>
+                  <li><?php echo ($plan["permission"]->domain->count == "0" ? e("Unlimited") : $plan["permission"]->domain->count)." ".e("Custom Domains"); ?></li>
+                <?php endif ?>   
+                <?php if ($plan["permission"]->bundle->enabled): ?>
+                  <li><?php echo e("Bundles & Link Rotator") ?></li>        
+                <?php endif ?>                  
+                <?php if (isset($plan["permission"]->alias->enabled) && $plan["permission"]->alias->enabled): ?>
+                  <li><?php echo e("Custom Aliases") ?></li>        
+                <?php endif ?>                   
+                <?php if ($plan["permission"]->export->enabled): ?>
+                  <li><?php echo e("Export Data") ?></li>        
+                <?php endif ?>                 
+                <?php if ($plan["permission"]->api->enabled): ?>
+                  <li><?php echo e("Developer API"); ?></li>
+                <?php endif ?>                               
+                <li><?php echo e("Limited URL Customization") ?></li>                
+                <li><?php echo e("Advertisement") ?></li>          
+              </ul>
+              <br>
+              <?php if($this->logged()): ?>
+                <?php if (!$this->pro()): ?>
+                  <a class="btn btn-primary btn-round"><?php echo e("Current Plan") ?></a> 
+                <?php endif ?>
+              <?php else: ?>
+                <a href="<?php echo Main::href("user/register") ?>" class="btn btn-secondary btn-round"><?php echo e("Get Started") ?></a> 
+              <?php endif ?>               
+            </div>
+          </div>          
+        <?php endforeach ?>
+        <?php foreach ($monthly as $plan): ?>
+          <div class="price-table highlighted">
+            <div class="table-inner text-center">
+              <h3><?php echo e($plan["name"]) ?></h3>
+              <div class="phrase"><?php echo e($plan["description"]) ?></div>
+              <span class="price"><?php echo Main::currency($this->config["currency"], number_format($plan["price"], 2)) ?></strong><small>/mo</small></span>
+              <ul class="feature-list">
+                <li><?php echo e("Premium Features") ?></li>
+                <li><?php echo $plan["urls"]== "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
+                <li><?php echo $plan["clicks"]== "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
+                <?php if ($plan["permission"]->geo->enabled): ?>
+                  <li><?php echo e("Geotargeting"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->device->enabled): ?>
+                  <li><?php echo e("Device Targeting"); ?></li>
+                <?php endif ?>                
+                <?php if ($plan["permission"]->splash->enabled): ?>
+                  <li><?php echo ($plan["permission"]->splash->count == "0" ? e("Unlimited") : $plan["permission"]->splash->count)." ".e("Custom Splash Pages"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->overlay->enabled): ?>
+                  <li><?php echo ($plan["permission"]->overlay->count == "0" ? e("Unlimited") : $plan["permission"]->overlay->count)." ".e("Custom Overlay Pages"); ?></li>
+                <?php endif ?>         
+                <?php if ($plan["permission"]->pixels->enabled): ?>
+                  <li><?php echo ($plan["permission"]->pixels->count == "0" ? e("Unlimited") : $plan["permission"]->pixels->count)." ".e("Event Tracking"); ?></li>
+                <?php endif ?>              
+                <?php if ($plan["permission"]->team->enabled): ?>
+                  <li><?php echo ($plan["permission"]->team->count == "0" ? e("Unlimited") : $plan["permission"]->team->count)." ".e("Team Member"); ?></li>
+                <?php endif ?>                       
+                <?php if ($plan["permission"]->domain->enabled): ?>
+                  <li><?php echo ($plan["permission"]->domain->count == "0" ? e("Unlimited") : $plan["permission"]->domain->count)." ".e("Custom Domains"); ?></li>
+                <?php endif ?>  
+                <?php if ($plan["permission"]->bundle->enabled): ?>
+                  <li><?php echo e("Bundles & Link Rotator") ?></li>        
+                <?php endif ?>        
+                <?php if (isset($plan["permission"]->alias->enabled) && $plan["permission"]->alias->enabled): ?>
+                  <li><?php echo e("Custom Aliases") ?></li>        
+                <?php endif ?>                            
+                <?php if ($plan["permission"]->export->enabled): ?>
+                  <li><?php echo e("Export Data") ?></li>        
+                <?php endif ?>                 
+                <?php if ($plan["permission"]->api->enabled): ?>
+                  <li><?php echo e("Developer API"); ?></li>
+                <?php endif ?>                                                  
+                <li><?php echo e("URL Customization") ?></li>                              
+                <li><?php echo e("No Advertisements") ?></li>
+                <?php if (!empty($plan["permission"]->custom)): ?>
+                  <li><?php echo e($plan["permission"]->custom); ?></li>
+                <?php endif ?>  
+              </ul>
+              <?php if ($this->logged() && $this->pro() && $this->user->planid == $plan["id"]): ?>
+                  <?php if ($this->user->trial): ?>
+                    <a href="<?php echo Main::href("upgrade/monthly/{$plan["id"]}") ?>" class="btn btn-secondary btn-round"><?php echo e("Subscribe") ?></a>   
+                  <?php else: ?>
+                    <a class="btn btn-primary btn-round"><?php echo e("Current Plan") ?></a> 
+                  <?php endif ?>
+              <?php else: ?>
+                <?php if($plan["trial"] && (!$this->logged() || ($this->logged() && !$this->db->get("payment", "trial_days IS NOT NULL AND userid = '{$this->user->id}'", ["limit" => 1])))): ?>
+                    <a href="<?php echo Main::href("upgrade/monthly/{$plan["id"]}?trial=1") ?>" class="btn btn-secondary btn-round"><?php echo $plan["trial"] ?>-<?php echo e("Day") ?> <?php echo e("Free Trial") ?></a>  
+                <?php else: ?>
+                  <a href="<?php echo Main::href("upgrade/monthly/{$plan["id"]}") ?>" class="btn btn-secondary btn-round"><?php echo e("Subscribe") ?></a>  
+                <?php endif ?>
+              <?php endif ?>                            
+            </div>
+          </div>          
+        <?php endforeach ?>
+      </div>
 
-				<a href="updater.php?step=2" class="button">I am ready, please update my database</a>		
-  		</div>  		
-  	</div>
-  </body>
-</html>
-<?php 
-function get_query($dbinfo){
-
-
-			// V5.9.1
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}url` ADD `status` INT(1) NOT NULL DEFAULT '1' AFTER `parameters`;";
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('manualapproval', '0');";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}domains` ADD `redirect404` VARCHAR(255) NULL AFTER `redirect`;";
-			
-			// V5.9
-			$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}reports` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `url` text,
-			  `bannedlink` text,
-			  `type` varchar(191) DEFAULT NULL,
-			  `ip` varchar(191) DEFAULT NULL,
-			  `email` varchar(191) DEFAULT NULL,
-			  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			  `status` int(1) NOT NULL DEFAULT '0',
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;";
-
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `profiledata` text NULL";
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `avatar` text NULL";
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `gtmpixel` text NULL";
-
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES 
-									('report', '1'),
-									('customheader', ''),
-									('customfooter', ''),
-									('saleszapier', ''),
-									('pppublic', ''),
-									('ppprivate', '');";
-			
-			
-			// V5.8.2
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('contact', '1');";
-			
-			
-			// v5.8
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` CHANGE `address` `address` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `trial` int(1) NOT NULL DEFAULT '0';";
-			#$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `trial_expiration` timestamp NULL;";			
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `zapview` varchar(255) NULL;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `zapurl` varchar(255) NULL;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `slackid` varchar(255) NULL;";
-			
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('slackclientid', '');";
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('slacksecretid', '');";
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('slackcommand', '');";
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('slacksigningsecret', '');";
-
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}posts` ADD `image` varchar(255) NULL;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}plans` ADD `trial_days` int(5) NULL;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}payment` ADD `trial_days` int(5) NULL;";
-
-			$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}coupons` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `name` varchar(255) DEFAULT NULL,
-			  `description` text,
-			  `code` varchar(255) DEFAULT NULL,
-			  `discount` int(3) DEFAULT NULL,
-			  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			  `used` int(9) NOT NULL DEFAULT '0',
-			  `validuntil` timestamp NULL DEFAULT NULL,
-			  `data` text,
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;";
-
-			
-
-			// V5.7
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}overlay` ADD `type` VARCHAR(255) NOT NULL DEFAULT 'message' AFTER `name`;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}domains` ADD `redirect` VARCHAR(255) NULL AFTER `domain`;";
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `secret2fa` VARCHAR(255) NULL AFTER `quorapixel`;";			
-			#$query[] = "UPDATE `{$dbinfo["prefix"]}settings` SET  `var` =  '0' WHERE `config` =  'captcha';";	
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('root_domain', '1');";
-			
-			
-			// V5.6.4
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('phish_username', '');";
-			
-			
-			// V5.6.3
-			$query[] = "ALTER TABLE `{$dbinfo["prefix"]}user` ADD `quorapixel` text NULL";
-			$query[] = "INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES ('blog', '1');";
-			$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}posts` (
-									  `id` int(11) NOT NULL AUTO_INCREMENT,
-									  `title` varchar(255) DEFAULT NULL,
-									  `content` text DEFAULT NULL,
-									  `slug` varchar(255) DEFAULT NULL,
-									  `date` datetime DEFAULT NULL,
-									  `views` int(9) NOT NULL DEFAULT '0',
-									  `meta_title` varchar(255) DEFAULT NULL,
-									  `meta_description` text DEFAULT NULL,
-									  `published` int(1) NOT NULL DEFAULT '1',
-									  PRIMARY KEY (`id`)
-									) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;";
-			
-			// V5.6
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `teampermission` text NULL;";
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `teamid` INT(9) NULL;";
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `parameters` text NULL AFTER `expiry`;";
-
-			$query[] ="INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES
-							('email.invitation', '<p><b>Hello!</b></p><p>You have been invited to join our team at {site.title}. To accept the invitation, please click the link below.</p><p><a href=\"http://{user.invite}\" target=\"_blank\">{user.invite}</a></p>');";
-
-		  $query[]="ALTER TABLE `{$dbinfo["prefix"]}plans` ADD `numclicks` INT(9) NULL AFTER `numurls`;";
-		  $query[]="ALTER TABLE `{$dbinfo["prefix"]}bundle` ADD `slug` VARCHAR(255) NULL AFTER `name`;";
-			
-			
-		  // V5.5
-		  $query[]="ALTER TABLE `{$dbinfo["prefix"]}url` CHANGE `meta_description` `meta_description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
-
-		  $query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `uniqueclick` bigint(20) DEFAULT '0'";
-
-			$query[] ="INSERT INTO `{$dbinfo["prefix"]}settings` (`config`, `var`) VALUES
-								('schemes', 'https,ftp,http'),
-								('email.activated', '<p><b>Hello</b></p><p>Your account has been successfully activated at {site.title}.</p>'),
-								('email.activation', '<p><b>Hello!</b></p><p>You have been successfully registered at {site.title}. To login you will have to activate your account by clicking the URL below.</p><p><a href=\"http://{user.activation}\" target=\"_blank\">{user.activation}</a></p>'),
-								('email.registration', '<p><b>Hello!</b></p><p>You have been successfully registered at {site.title}. You can now login to our site at <a href=\"http://{site.link}\" target=\"_blank\">{site.link}</a>.</p>'),
-								('email.reset', '<p><b>A request to reset your password was made.</b> If you <b>didn\'t</b> make this request, please ignore and delete this email otherwise click the link below to reset your password.</p>\r\n		      <b><div style=\"text-align: center;\"><b><a href=\"http://{user.activation}\" class=\"link\">Click here to reset your password.</a></b></div></b></p><p>\r\n		      <p>If you cannot click on the link above, simply copy &amp; paste the following link into your browser.</p>\r\n		      <p><a href=\"http://{user.activation}\" target=\"_blank\">{user.activation}</a></p>\r\n		      <p><b>Note: This link is only valid for one day. If it expires, you can request another one.</b></p>');";
-
-			$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES ('purchasecode', '');";
-			$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES ('alias_length', '5');";
-			$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES ('theme_config', '');";
-
-			$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD  `planid` int(9) DEFAULT NULL";
-
-			$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}plans` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `name` varchar(255) DEFAULT NULL,
-			  `slug` varchar(255) DEFAULT NULL,
-			  `description` text,
-			  `icon` varchar(255) DEFAULT NULL,
-			  `price_monthly` float NOT NULL DEFAULT '0',
-			  `price_yearly` float NOT NULL DEFAULT '0',
-			  `free` int(1) NOT NULL DEFAULT '0',
-			  `numurls` int(9) DEFAULT NULL,
-			  `permission` text,
-			  `status` int(1) NOT NULL DEFAULT '0',
-			  `stripeid` varchar(255) DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
-
-			$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}overlay` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `userid` int(9) DEFAULT NULL,
-			  `name` varchar(255) DEFAULT NULL,
-			  `data` text,
-			  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			  PRIMARY KEY (`id`),
-			  KEY `userid` (`userid`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";			
-			
-			$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}domains` (
-		  `id` int(11) NOT NULL AUTO_INCREMENT,
-		  `userid` int(11) DEFAULT NULL,
-		  `domain` varchar(255) DEFAULT NULL,
-		  `status` int(1) NOT NULL DEFAULT '1',
-		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
-
-		$query[] = "CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}ads` (
-		  `id` int(11) NOT NULL AUTO_INCREMENT,
-		  `name` varchar(255) DEFAULT NULL,
-		  `type` enum('728','468','300','resp','splash','frame') DEFAULT NULL,
-		  `code` text,
-		  `impression` int(12) DEFAULT '0',
-		  `enabled` enum('0','1') DEFAULT '1',
-		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-		$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES
-		('advanced', '0');";
-
-		$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES
-		('allowdelete', '1'),
-		('favicon', ''),
-		('serverip', '');";
-
-		$query[]="ALTER TABLE `{$dbinfo["prefix"]}subscription` ADD `planid` int(9) DEFAULT NULL";
-
-		$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `twitterpixel` text NULL";
-		$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `adrollpixel` text NULL";
-
-		$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` CHANGE `fbpixel` `fbpixel` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `adwordspixel` `adwordspixel` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `linkedinpixel` `linkedinpixel` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
-
-		#$query[]="UPDATE `{$dbinfo["prefix"]}user` SET  `fbpixel` =  '';";		
-		#$query[]="UPDATE `{$dbinfo["prefix"]}user` SET  `linkedinpixel` =  '';";		
-		#$query[]="UPDATE `{$dbinfo["prefix"]}user` SET  `adwordspixel` =  '';";		
-
-		$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES
-		('homepage_stats', '1'),
-		('home_redir', ''),
-		('detectadblock', '0'),
-		('timezone', ''),
-		('freeurls', '10')";
-
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `pixels` varchar(255) NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `expiry` date NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `address` text NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `name` varchar(255) NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `fbpixel` text(255) NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `linkedinpixel` text(255) NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `adwordspixel` text(255) NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `defaulttype` varchar(255) NULL";
-
-	// Add new Tables
-	#$query[]="UPDATE `{$dbinfo["prefix"]}settings` SET  `var` =  'cleanex' WHERE `config` =  'theme';";	
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `domain` text NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}stats` ADD `browser` text NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}stats` ADD `os` text NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `devices` text NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `overlay` text NULL";
-
-	$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES ('devicetarget', '1');";
-
-	$query[]="CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}payment` (
-					  `id` int(11) AUTO_INCREMENT,
-					  `tid` varchar(255) NULL,
-					  `userid` bigint(20) NULL,
-					  `status` varchar(255) NULL,
-					  `amount` decimal(10,2) NULL,
-					  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-					  `expiry` datetime NULL,
-					  `data` text NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
-
-	$query[]="CREATE TABLE IF NOT EXISTS `{$dbinfo["prefix"]}splash` (
-					  `id` int(11) AUTO_INCREMENT,
-					  `userid` bigint(12) NULL,
-					  `name` varchar(255) NULL,
-					  `data` text NULL,
-					  `date` datetime NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
-
-
-	#$query[]="UPDATE `{$dbinfo["prefix"]}settings` SET  `config` =  'pro_yearly' WHERE `config` = 'custom_splash_amount';";
-	#$query[]="UPDATE `{$dbinfo["prefix"]}settings` SET  `config` =  'pro_monthly' WHERE `config` =  'removal_amount';";
-
-	$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES
-		('smtp', ''),
-		('style', ''),
-		('font', ''),
-		('currency', 'USD'),
-		('news', ''),
-		('gl_connect', '0'),
-		('require_registration', '0'),
-		('phish_api', ''),
-		('aliases', '');";
-
-	$query[]="INSERT INTO `{$dbinfo["prefix"]}settings` (`config` ,`var`) VALUES
-		('pro', '1'),
-		('google_cid', ''),
-		('google_cs', ''),
-		('public_dir', '0');";
-		
-	//Update stats Table
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}stats` ADD `urlid` bigint(20) NULL";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}stats` ADD `urluserid` bigint(20) NULL DEFAULT '0'";
-	$query[]="ALTER TABLE `{$dbinfo["prefix"]}stats` ADD `domain` varchar(50) NULL";
- 	// Update URL Table
- 	$query[]="ALTER TABLE `{$dbinfo["prefix"]}url` ADD `type` varchar(50) NULL DEFAULT ''";
- 	// Update User Table
- 	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `auth_key` varchar(100) NULL";
- 	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `last_payment` datetime NULL";
- 	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `expiration` datetime NULL";
- 	$query[]="ALTER TABLE `{$dbinfo["prefix"]}user` ADD `pro` int(1) NULL DEFAULT '0'";
-
-	return $query;
-}
-
-?>
+      <div class="yearly cf">
+        <?php foreach ($free as $plan): ?>
+          <div class="price-table">
+            <div class="table-inner text-center">
+              <h3><?php echo e($plan["name"]) ?></h3>
+              <div class="phrase"><?php echo e($plan["description"]) ?></div>
+              <span class="price"><?php echo e("Free") ?><small class="billed"><?php echo e("Forever") ?></small></span>
+              <ul class="feature-list">
+                <li><?php echo e("Basic Features") ?></li>
+                <li><?php echo $plan["urls"]== "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
+                <li><?php echo $plan["clicks"]== "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
+                <?php if ($plan["permission"]->geo->enabled): ?>
+                  <li><?php echo e("Geotargeting"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->device->enabled): ?>
+                  <li><?php echo e("Device Targeting"); ?></li>
+                <?php endif ?>                
+                <?php if ($plan["permission"]->splash->enabled): ?>
+                  <li><?php echo ($plan["permission"]->splash->count == "0" ? e("Unlimited") : $plan["permission"]->splash->count)." ".e("Custom Splash Pages"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->overlay->enabled): ?>
+                  <li><?php echo ($plan["permission"]->overlay->count == "0" ? e("Unlimited") : $plan["permission"]->overlay->count)." ".e("Custom Overlay Pages"); ?></li>
+                <?php endif ?>         
+                <?php if ($plan["permission"]->pixels->enabled): ?>
+                  <li><?php echo ($plan["permission"]->pixels->count == "0" ? e("Unlimited") : $plan["permission"]->pixels->count)." ".e("Event Tracking"); ?></li>
+                <?php endif ?>                 
+                <?php if ($plan["permission"]->team->enabled): ?>
+                  <li><?php echo ($plan["permission"]->team->count == "0" ? e("Unlimited") : $plan["permission"]->team->count)." ".e("Team Member"); ?></li>
+                <?php endif ?>                    
+                <?php if ($plan["permission"]->domain->enabled): ?>
+                  <li><?php echo ($plan["permission"]->domain->count == "0" ? e("Unlimited") : $plan["permission"]->domain->count)." ".e("Custom Domains"); ?></li>
+                <?php endif ?>   
+                <?php if ($plan["permission"]->bundle->enabled): ?>
+                  <li><?php echo e("Bundles & Link Rotator") ?></li>        
+                <?php endif ?>            
+                <?php if (isset($plan["permission"]->alias->enabled) && $plan["permission"]->alias->enabled): ?>
+                  <li><?php echo e("Custom Aliases") ?></li>        
+                <?php endif ?>                       
+                <?php if ($plan["permission"]->export->enabled): ?>
+                  <li><?php echo e("Export Data") ?></li>        
+                <?php endif ?>                 
+                <?php if ($plan["permission"]->api->enabled): ?>
+                  <li><?php echo e("Developer API"); ?></li>
+                <?php endif ?>                               
+                <li><?php echo e("Limited URL Customization") ?></li>                
+                <li><?php echo e("Advertisement") ?></li>          
+              </ul>
+              <br>
+              <?php if($this->logged()): ?>
+                <?php if (!$this->pro()): ?>
+                  <a class="btn btn-primary btn-round"><?php echo e("Current Plan") ?></a> 
+                <?php endif ?>
+              <?php else: ?>
+                <a href="<?php echo Main::href("user/register") ?>" class="btn btn-secondary btn-round"><?php echo e("Get Started") ?></a> 
+              <?php endif ?>               
+            </div>
+          </div>          
+        <?php endforeach ?>
+        <?php foreach ($yearly as $plan): ?>
+          <div class="price-table highlighted">
+            
+            <?php if ($plan["discount"] > 1): ?>
+              <div class="corner-ribbon top-left"><?php echo e("Save")." {$plan["discount"]}" ?>%</div>
+            <?php endif ?>
+            <div class="table-inner text-center">
+              <h3><?php echo e($plan["name"]) ?></h3>
+              <div class="phrase"><?php echo e($plan["description"]) ?></div>
+              <span class="price"><?php echo Main::currency($this->config["currency"], number_format($plan["price"]/12, 2)) ?></strong><small>/mo</small><small class="billed"><?php echo e("Billed") ?> <?php echo Main::currency($this->config["currency"],$plan["price"]) ?></small></span>          
+              <ul class="feature-list">
+                <li><?php echo e("Premium Features") ?></li>
+                <li><?php echo $plan["urls"]== "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
+                <li><?php echo $plan["clicks"]== "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
+                <?php if ($plan["permission"]->geo->enabled): ?>
+                  <li><?php echo e("Geotargeting"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->device->enabled): ?>
+                  <li><?php echo e("Device Targeting"); ?></li>
+                <?php endif ?>                
+                <?php if ($plan["permission"]->splash->enabled): ?>
+                  <li><?php echo ($plan["permission"]->splash->count == "0" ? e("Unlimited") : $plan["permission"]->splash->count)." ".e("Custom Splash Pages"); ?></li>
+                <?php endif ?>
+                <?php if ($plan["permission"]->overlay->enabled): ?>
+                  <li><?php echo ($plan["permission"]->overlay->count == "0" ? e("Unlimited") : $plan["permission"]->overlay->count)." ".e("Custom Overlay Pages"); ?></li>
+                <?php endif ?>         
+                <?php if ($plan["permission"]->pixels->enabled): ?>
+                  <li><?php echo ($plan["permission"]->pixels->count == "0" ? e("Unlimited") : $plan["permission"]->pixels->count)." ".e("Event Tracking"); ?></li>
+                <?php endif ?>              
+                <?php if ($plan["permission"]->team->enabled): ?>
+                  <li><?php echo ($plan["permission"]->team->count == "0" ? e("Unlimited") : $plan["permission"]->team->count)." ".e("Team Member"); ?></li>
+                <?php endif ?>                       
+                <?php if ($plan["permission"]->domain->enabled): ?>
+                  <li><?php echo ($plan["permission"]->domain->count == "0" ? e("Unlimited") : $plan["permission"]->domain->count)." ".e("Custom Domains"); ?></li>
+                <?php endif ?>   
+                <?php if ($plan["permission"]->bundle->enabled): ?>
+                  <li><?php echo e("Bundles & Link Rotator") ?></li>        
+                <?php endif ?>              
+                <?php if (isset($plan["permission"]->alias->enabled) && $plan["permission"]->alias->enabled): ?>
+                  <li><?php echo e("Custom Aliases") ?></li>        
+                <?php endif ?>                     
+                <?php if ($plan["permission"]->export->enabled): ?>
+                  <li><?php echo e("Export Data") ?></li>        
+                <?php endif ?>                 
+                <?php if ($plan["permission"]->api->enabled): ?>
+                  <li><?php echo e("Developer API"); ?></li>
+                <?php endif ?>                                                  
+                <li><?php echo e("URL Customization") ?></li>                              
+                <li><?php echo e("No Advertisements") ?></li>
+                <?php if (!empty($plan["permission"]->custom)): ?>
+                  <li><?php echo e($plan["permission"]->custom); ?></li>
+                <?php endif ?>  
+              </ul>
+              <?php if ($this->logged() && $this->pro() && $this->user->planid == $plan["id"]): ?>
+                  <?php if ($this->user->trial): ?>
+                    <a href="<?php echo Main::href("upgrade/yearly/{$plan["id"]}") ?>" class="btn btn-secondary btn-round"><?php echo e("Subscribe") ?></a>   
+                  <?php else: ?>
+                    <a class="btn btn-primary btn-round"><?php echo e("Current Plan") ?></a> 
+                  <?php endif ?>
+              <?php else: ?>
+                <?php if($plan["trial"] && (!$this->logged() || ($this->logged() && !$this->db->get("payment", "trial_days IS NOT NULL AND userid = '{$this->user->id}'", ["limit" => 1])))): ?>                  
+                    <a href="<?php echo Main::href("upgrade/yearly/{$plan["id"]}?trial=1") ?>" class="btn btn-secondary btn-round"><?php echo $plan["trial"] ?>-<?php echo e("Day") ?> <?php echo e("Free Trial") ?></a>                      
+                <?php else: ?>
+                  <a href="<?php echo Main::href("upgrade/yearly/{$plan["id"]}") ?>" class="btn btn-secondary btn-round"><?php echo e("Subscribe") ?></a>  
+                <?php endif ?>
+              <?php endif ?>                      
+            </div>
+          </div>          
+        <?php endforeach ?>
+      </div>
+    </div>
+  </div>
+</section>
+<hr>
+<section id="faq">
+  <div class="container">
+    <div class="panel panel-body">
+      <div class="text-center">
+        <h1><?php echo e("Frequently Asked Questions") ?></h1>    
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <?php if ($discountMax): ?>
+            <div class="faq-list clearfix">
+              <h2><i class="glyphicon glyphicon-gift"></i> <?php echo e("If I pay yearly, do I get a discount?") ?></h2>
+              <p class="info"><?php echo e("Definitely! If you choose to pay yearly, not only will you make great use of premium features but also you will get a discount of up to $discountMax%.") ?></p>
+            </div>                  
+          <?php endif ?>            
+        </div>
+        <div class="col-md-6">
+          <div class="faq-list clearfix">
+            <h2><i class="glyphicon glyphicon-flash"></i> <?php echo e("Can I upgrade my account at any time?") ?></h2>
+            <p class="info"><?php echo e("Yes! You can start with our free package and upgrade anytime to enjoy premium features.") ?></p>
+          </div>        
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <?php if (isset($this->config["pt"]) && $this->config["pt"] == "stripe"): ?>
+            <div class="faq-list clearfix">
+              <h2><i class="glyphicon glyphicon-credit-card"></i> <?php echo e("How will I be charged?") ?></h2>
+              <p class="info"><?php echo e("You will be charged at the beginning of each period automatically until canceled.") ?></p>
+            </div>           
+          <?php else: ?>
+            <div class="faq-list clearfix">
+              <h2><i class="glyphicon glyphicon-credit-card"></i> <?php echo e("How will I be charged?") ?></h2>
+              <p class="info"><?php echo e("You will be reminded to renew your membership 7 days before your expiration.") ?></p>
+            </div>          
+          <?php endif ?>        
+        </div>
+        <div class="col-md-6">
+          <?php if (isset($this->config["pt"]) && $this->config["pt"] == "stripe"): ?>
+            <div class="faq-list clearfix">
+              <h2><i class="glyphicon glyphicon-log-in"></i> <?php echo e("How do refunds work?") ?></h2>
+              <p class="info">
+                <?php echo e("Upon request, we will issue a refund at the moment of the request for all <strong>upcoming</strong> periods. If you are on a monthly plan, we will stop charging you at the end of your current billing period. If you are on a yearly plan, we will refund amounts for the remaining months.") ?>            
+              </p>
+            </div>          
+          <?php else: ?>
+          <div class="faq-list clearfix">
+            <h2><i class="glyphicon glyphicon-log-in"></i> <?php echo e("How do refunds work?") ?></h2>
+            <p class="info">
+              <?php echo e("Upon request, we will issue a refund at the moment of the request for all <strong>upcoming</strong> periods. You will just need to contact us and we will take care of everything.") ?>            
+            </p>
+          </div>       
+          <?php endif ?>        
+        </div>
+      </div>       
+    </div>  
+  </div>
+</section>
+<hr>
+<section>
+  <div class="container">
+    <div class="featurette">
+      <h3 class="text-center featureH"><?php echo e("Premium Features. All Yours.") ?></h3>
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="glyphicon glyphicon-globe"></i>
+          <h3><?php echo e("Target Customers") ?></h3>
+          <p><?php echo e("Target your users based on their location and device and redirect them to specialized pages to increase your conversion.") ?></p>
+        </div>    
+        <div class="col-sm-4">
+          <i class="glyphicon glyphicon-star"></i>
+          <h3><?php echo e("Custom Landing Page") ?></h3>
+          <p><?php echo e("Create a custom landing page to promote your product or service on forefront and engage the user in your marketing campaign.") ?></p>
+        </div>      
+        <div class="col-sm-4">
+          <i class="glyphicon glyphicon-asterisk"></i>
+          <h3><?php echo e("Overlays") ?></h3>
+          <p><?php echo e("Use our overlay tool to display unobtrusive notifications on the target website. A perfect way to send a message to your customers or run a promotion campaign.") ?></p>
+        </div>
+      </div>    
+      <br> 
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="glyphicon glyphicon-th"></i>
+          <h3><?php echo e("Event Tracking") ?></h3>
+          <p><?php echo e("Add your custom pixel from providers such as Facebook and track events right when they are happening.") ?></p>
+        </div>        
+        <div class="col-sm-4">
+          <i class="glyphicon glyphicon-glass"></i>
+          <h3><?php echo e("Premium Aliases") ?></h3>
+          <p><?php echo e("As a premium membership, you will be able to choose a premium alias for your links from our list of reserved aliases.") ?></p>
+        </div>     
+        <div class="col-sm-4">
+          <i class="glyphicon glyphicon-cloud"></i>
+          <h3><?php echo e("Robust API") ?></h3>
+          <p><?php echo e("Use our powerful API to build custom applications or extend your own application with our powerful tools.") ?></p>
+        </div>         
+      </div>
+    </div>    
+  </div>       
+</section>

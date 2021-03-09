@@ -25,6 +25,8 @@
                 <li><?php echo e("Basic Features") ?></li>
                 <li><?php echo $plan["urls"] == "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
                 <li><?php echo $plan["clicks"] == "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
                 <?php if ($plan["permission"]->geo->enabled): ?>
                   <li><?php echo e("Geotargeting"); ?></li>
                 <?php endif ?>
@@ -82,6 +84,8 @@
                 <li><?php echo e("Premium Features") ?></li>
                 <li><?php echo $plan["urls"]== "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
                 <li><?php echo $plan["clicks"]== "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
                 <?php if ($plan["permission"]->geo->enabled): ?>
                   <li><?php echo e("Geotargeting"); ?></li>
                 <?php endif ?>
@@ -150,6 +154,8 @@
                 <li><?php echo e("Basic Features") ?></li>
                 <li><?php echo $plan["urls"]== "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
                 <li><?php echo $plan["clicks"]== "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
                 <?php if ($plan["permission"]->geo->enabled): ?>
                   <li><?php echo e("Geotargeting"); ?></li>
                 <?php endif ?>
@@ -211,6 +217,8 @@
                 <li><?php echo e("Premium Features") ?></li>
                 <li><?php echo $plan["urls"]== "0" ? e("Unlimited") : $plan["urls"] ?> <?php echo e("URLs allowed") ?></li>
                 <li><?php echo $plan["clicks"]== "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>
+                <li><?php echo $plan["credits_per_click"] == "0" ? e("0") : $plan["credits_per_click"] ?> <?php echo e("Credits per Clicks") ?></li>
+                <li><?php echo $plan["cookie_expires_in_days"] == "0" ? e("Unlimited") : $plan["cookie_expires_in_days"] ?> <?php echo e("days between credits from each user.") ?></li>
                 <?php if ($plan["permission"]->geo->enabled): ?>
                   <li><?php echo e("Geotargeting"); ?></li>
                 <?php endif ?>

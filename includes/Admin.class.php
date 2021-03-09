@@ -1471,7 +1471,8 @@ class Admin{
           // Validated Single Nonce
           if(Main::validate_nonce("delete_user_all-{$this->id}")){
             $urls=$this->db->get("url",array("userid"=>"?"),array("limit"=>1),array($this->id));
-            foreach ($url as $url) {
+            // foreach ($url as $url) {
+            foreach ($urls as $url) {
               $this->db->delete("stats",array("short"=>"?"),array($url->alias.$url->custom));
             }
             $this->db->delete("url",array("userid"=>"?"),array($this->id));
@@ -1763,7 +1764,9 @@ class Admin{
           ":free" => Main::clean($_POST["free"],3,TRUE),
           ":trial_days" => !empty($_POST["trial_days"]) ? Main::clean($_POST["trial_days"],3,TRUE) : "0",
           ":numurls" => empty($_POST["numurls"]) ? "0" : Main::clean($_POST["numurls"],3,TRUE),
-          ":numclicks" => empty($_POST["numurls"]) ? "0" : Main::clean($_POST["numclicks"],3,TRUE),
+          ":numclicks" => empty($_POST["numclicks"]) ? "0" : Main::clean($_POST["numclicks"],3,TRUE),
+          ":credits_per_click" => empty($_POST["credits_per_click"]) ? "0" : Main::clean($_POST["credits_per_click"],3,TRUE),
+          ":cookie_expires_in_days" => empty($_POST["cookie_expires_in_days"]) ? "0" : Main::clean($_POST["cookie_expires_in_days"],3,TRUE),
           ":price_monthly" => $_POST["price_monthly"] ? Main::clean($_POST["price_monthly"],3,TRUE) : "0",
           ":price_yearly" => $_POST["price_yearly"] ? Main::clean($_POST["price_yearly"],3,TRUE) : "0",
           ":permission" => json_encode($_POST["permission"]),
@@ -1820,6 +1823,20 @@ class Admin{
         <div class='col-sm-9'>
           <input type='text' class='form-control' name='numclicks' id='numclicks' value='".Main::get("numclicks")."' required>
           <p class='help-block'>This will limit the number of clicks for each account. After this amount, clicks will not be counted anymore. URLs will still work however. '0' for unlimited.</p>   
+        </div>
+      </div>  
+      <div class='form-group'>
+        <label for='credits_per_click' class='col-sm-3 control-label'>Credit per Click</label>
+        <div class='col-sm-9'>
+          <input type='text' class='form-control' name='credits_per_click' id='credits_per_click' value='".Main::get("credits_per_click")."' required>
+          <p class='help-block'>This will limit the number of credits the user gets on each click.</p>   
+        </div>
+      </div>  
+      <div class='form-group'>
+        <label for='cookie_expires_in_days' class='col-sm-3 control-label'>Cookie Expires in</label>
+        <div class='col-sm-9'>
+          <input type='text' class='form-control' name='cookie_expires_in_days' id='cookie_expires_in_days' value='".Main::get("cookie_expires_in_days")."' required>
+          <p class='help-block'>This will limit the number of cookie days affiliate link stays on the url opener's device, for each account. After this amount, click will earn credits once again and the days restart. URLs will still work however. '0' for unlimited.</p>   
         </div>
       </div>                       
       <hr>
@@ -2319,6 +2336,8 @@ class Admin{
           ":trial_days" => empty($_POST["trial_days"]) ? NULL : Main::clean($_POST["trial_days"],3,TRUE),
           ":numurls" => empty($_POST["numurls"]) ? "0" : Main::clean($_POST["numurls"],3,TRUE),
           ":numclicks" => empty($_POST["numclicks"]) ? "0" : Main::clean($_POST["numclicks"],3,TRUE),
+          ":credits_per_click" => empty($_POST["credits_per_click"]) ? "0" : Main::clean($_POST["credits_per_click"],3,TRUE),
+          ":cookie_expires_in_days" => empty($_POST["cookie_expires_in_days"]) ? "0" : Main::clean($_POST["cookie_expires_in_days"],3,TRUE),
           ":price_monthly" => $_POST["price_monthly"] ? Main::clean($_POST["price_monthly"],3,TRUE) : "0",
           ":price_yearly" => $_POST["price_yearly"] ? Main::clean($_POST["price_yearly"],3,TRUE) : "0",
           ":permission" => json_encode($_POST["permission"]),
@@ -2405,7 +2424,21 @@ class Admin{
           <input type='text' class='form-control' name='numclicks' id='numclicks' value='{$plan->numclicks}'>
           <p class='help-block'>This will limit the number of clicks for each account. After this amount, clicks will not be counted anymore. URLs will still work however. '0' for unlimited.</p>   
         </div>
-      </div>             
+      </div> 
+      <div class='form-group'>
+        <label for='credits_per_click' class='col-sm-3 control-label'>Credits per Clicks</label>
+        <div class='col-sm-9'>
+          <input type='text' class='form-control' name='credits_per_click' id='credits_per_click' value='{$plan->credits_per_click}'>
+          <p class='help-block'>This will limit the number of credits the user gets on each click.</p>   
+        </div>
+      </div>  
+      <div class='form-group'>
+        <label for='cookie_expires_in_days' class='col-sm-3 control-label'>Cookies Expires in</label>
+        <div class='col-sm-9'>
+          <input type='text' class='form-control' name='cookie_expires_in_days' id='cookie_expires_in_days' value='{$plan->cookie_expires_in_days}'>
+          <p class='help-block'>This will limit the number of cookie days affiliate link stays on the url opener's device, for each account. After this amount, click will earn credits once again and the days restart. URLs will still work however. '0' for unlimited.</p>   
+        </div>
+      </div>              
       <hr>
       <ul class='form_opt' data-id='free'>
         <li class='text-label'>Free Plan <small>This will be the free plan. If you don't have a free plan, users will be forced to upgrade.</small></li>
