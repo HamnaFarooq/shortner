@@ -15,14 +15,18 @@
 					</h2>
 					<hr class="visible-sm visible-xs">
 					<div class="row">
-						<div class="col-sm-4 url-stats">
+						<div class="col-sm-2 url-stats">
 								<?php echo $url->click ?>
 								<span><?php echo e("Clicks") ?></span>
 							<br>
 						</div>
-						<div class="div col-sm-4 url-stats">							
+						<div class="div col-sm-2 url-stats">							
 								<?php echo $url->unique ?>
 								<span><?php echo e("Unique Clicks")?></span>
+						</div>
+						<div class="div col-sm-4 url-stats">							
+								<?php echo $url->credits ?>
+								<span><?php echo e("Credits Earned")?></span>
 						</div>
 						<div class="col-sm-4 text-center">
 							<p>

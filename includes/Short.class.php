@@ -1174,7 +1174,7 @@ class Short extends App{
 		// Check with Phish
 		if($this->phish($url->url)){
 			return $this->unsafe();
-		}			
+		}	
 
 		$url->short=$this->config["url"]."/".$url->alias.$url->custom;
 
@@ -1196,6 +1196,13 @@ class Short extends App{
 			$url->unique = "n/a";
 
 		}
+
+		if($this->config["tracking"] == 1){
+			$url->credits = $url->credits_earned;
+		}else{
+			$url->credits = "n/a";
+		}
+
 
 		$url->fullurl = (!empty($url->domain) ? $url->domain : $this->config["url"])."/".$url->alias.$url->custom;
 
