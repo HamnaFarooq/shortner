@@ -5,7 +5,7 @@
   </p>  
 <?php endif ?>
 <div class="row stats">
-  <div class="col-md-3">
+  <div class="col-md-2">
     <div class="panel panel-default panel-blue">
       <div class="panel-body">
         <p class="main-stats"><span><?php echo $this->db->count("url") ?></span> URLs</p>
@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
     <div class="panel panel-default panel-green">
       <div class="panel-body">
         <p class="main-stats"><span><?php echo $this->db->count("url","","click") ?></span> Clicks</p>
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div> 
-  <div class="col-md-3">
+  <div class="col-md-2">
     <div class="panel panel-default panel-red">
       <div class="panel-body">
         <p class="main-stats"><span><?php echo $this->db->count("user") ?></span>Users</p>
@@ -29,14 +29,23 @@
       </div>
     </div>
   </div>  
-  <div class="col-md-3">
+  <div class="col-md-2">
     <div class="panel panel-default panel-black">
       <div class="panel-body">
         <p class="main-stats"><span><?php echo Main::currency($this->config["currency"],$this->db->count("payment","(MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())) AND status='Completed'","amount") - $this->db->count("payment","(MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())) AND status='Refunded'","amount")) ?></span> in <?php echo date("F") ?></p>
          <p><?php echo Main::currency($this->config["currency"],$this->db->count("payment","status='Completed'","amount") - $this->db->count("payment","status='Refunded'","amount")) ?> Total</p>
       </div>
     </div>
-  </div>       
+  </div>
+  <div class="col-md-2">
+    <div class="panel panel-default panel-green" style="color:orange">
+      <div class="panel-body">
+        <p class="main-stats"><span><?php echo $this->db->count("user","id='1'","credits") ?></span> Credits </p>
+        <p>click earnings</p>
+      
+      </div>
+    </div>
+  </div>        
 </div><!--/.stats-->
 <div class="panel panel-default hidden-xs">
   <div class="panel-heading">

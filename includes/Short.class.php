@@ -736,6 +736,11 @@ class Short extends App{
 
 		if(!$this->db->get("stats", ["urlid" => $url->id, "ip" => Main::ip()], ["limit" => 1])){
 			$this->db->update("url",array("uniqueclick" => "uniqueclick+1"),array("id"=>":a"), array(":a"=>$url->id));
+			$plan = $this->db->get("plans", ["id" => $user->planid], ["limit" => 1]);
+			if($plan && $plan->credits_per_click)
+				$this->db->update("url",array("credits_earned" => "credits_earned+:cred"),array("id"=>":a"), array(":a"=>$url->id, ":cred"=>$plan->credits_per_click));
+				$this->db->update("user",array("credits" => "credits+:cred"),array("id"=>":a"), array(":a"=>$url->userid, ":cred"=>$plan->credits_per_click));
+				$this->db->update("user",array("credits" => "credits+:cred"),array("id"=>"1"), array(":cred"=>$plan->credits_per_click));
 		}		
 
 		if($this->config["tracking"]=="1"){

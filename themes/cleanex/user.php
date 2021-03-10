@@ -1,7 +1,25 @@
 <?php defined("APP") or die() // Main User Page ?>
 <div class="row">	
   <div id="user-content" class="col-md-8">  	
-		<?php echo Main::message() ?>  	
+		<?php echo Main::message() ?>  
+		
+		<div class="row stats">
+          <div class="col-md-8">
+            <div class="panel panel-default panel-blue">
+              <div class="panel-body">
+                <p class="main-stats"><span style="color: #0067F4;"> <b> <?php echo $this->user->credits ?></span> </b> Total Credits </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="panel panel-default panel-blue">
+              <div class="panel-body">
+                <p class="main-stats" style="color: #0067F4;"><span></span> <a href=""> Cash out </a> </p>
+              </div>
+            </div>
+          </div>
+        </div><!--/.stats-->
+		
   	<!-- Shortener Form -->
   	<?php $this->shortener() ?>
 

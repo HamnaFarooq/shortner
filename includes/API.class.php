@@ -431,6 +431,7 @@ class API extends App{
 								"data" => [
 										"clicks"  			 		=> (int) $url->click,
 										"uniqueClicks" 			=> (int) $unique,
+										"creditsEarned" 			=> (int) $url->credits_earned, //:/
 										"topCountries" 			=> (int) $top_country,
 										"topReferrers" 		 	=> (int) $top_referrers,
 										"topBrowsers"				=> (int) $top_browsers,

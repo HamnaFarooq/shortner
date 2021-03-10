@@ -416,6 +416,7 @@
                     },
                     "data": {
                       "clicks": 0,
+                      "credits_earned": 0, //:/
                       "uniqueClicks": 0,
                       "topCountries": 0,
                       "topReferrers": 0,
