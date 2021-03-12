@@ -73,6 +73,7 @@ class Main{
   * Body Class inject
   * @param none
   * @return message
+  * @return cash_out
   * @since v1.0
   */     
     public static function body_class(){

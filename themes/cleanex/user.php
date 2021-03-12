@@ -14,7 +14,7 @@
           <div class="col-md-4">
             <div class="panel panel-default panel-blue">
               <div class="panel-body">
-                <p class="main-stats" style="color: #0067F4;"><span></span> <a href=""> Cash out </a> </p>
+                <p class="main-stats" style="color: #0067F4;"><span></span> <a href="<?php echo Main::href("cash_out") ?>" class="btn btn-secondary btn-round"> Cash out </a> </p>
               </div>
             </div>
           </div>

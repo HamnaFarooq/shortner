@@ -47,7 +47,7 @@ class App{
 	 * @since 5.9
 	 **/
 	protected $page = 1, $db, $config = array(), $action = "", $do = "", $id = "", $http = "http", $sandbox = false;
-	protected $actions = ["user","page","contact","server","pricing","upgrade" ,"analytic","profile","ipn", "q", "jShortener", "webhook","api", "scriptjs", "r","blog", "report", "u"];	
+	protected $actions = ["user","page","contact","server","pricing","upgrade","cash_out","analytic","profile","ipn", "q", "jShortener", "webhook","api", "scriptjs", "r","blog", "report", "u"];	
 	/**
 	 * User Variables
 	 * @since 4.0
@@ -565,7 +565,7 @@ class App{
 
 			if($this->requireUpgrade() && $this->do != "logout") return Main::redirect(Main::href("pricing","",FALSE));
 
-			$action = array("edit","delete","archive","expired","bundles","splash","settings","logout","verify","search","server","export","overlay","pixels", "tools", "cancel","terminate","membership","domain","teams", "builder");
+			$action = array("edit","delete","archive","expired","bundles","splash","settings","logout","verify","search","server","export","overlay","pixels", "tools", "cancel","terminate","membership","domain","teams", "builder", "cash_out");
 			
 		}else{
 
@@ -2118,7 +2118,7 @@ class App{
 
 		$server = Main::clean($_POST["request"],3,TRUE);
 		// Swtich requests
-		$system=array("unlock","lock","bundle","edit","archive","unarchive","activities","bundle_urls","url_bundle_add","bundle_create","bundle_edit", "cancel","refreshlinks", "bulk_bundle", "bulk_bundle_add", "validatecoupon");	
+		$system=array("unlock","lock","bundle","edit","archive","unarchive","activities","bundle_urls","url_bundle_add","bundle_create","bundle_edit", "cancel", "cash_out", "refreshlinks", "bulk_bundle", "bulk_bundle_add", "validatecoupon");	
 
 		if($this->config["allowdelete"]){
 			$system[] = "delete_account";
@@ -2576,6 +2576,25 @@ class App{
 								<button type="submit" class="btn btn-primary">'.e("Cancel my membership").'</button>							
 						</form>';
 	}
+
+	protected function cash_out(){
+		echo '<form action="'.Main::href("user/cash_out").'" method="post" class="form">
+						<p>'.e("We are happy to see that you have earned those credits yourself. You Definately derserve the reward.").'</p>
+
+						<div class="form-group">
+							<label>'.e("Password").'</label>			
+							<input type="password" name="password" class="form-control" />
+						</div>				
+						<div class="form-group">
+							<label>'.e("Please enter your email address. (Paypal one if you already have an account)").'</label>			
+							<input type="email" name="email" class="form-control" />
+						</div>
+
+						'.Main::csrf_token(TRUE).'
+						<button type="submit" class="btn btn-primary">'.e("Cash Out").'</button>							
+				</form>';
+	}
+
 	/**
 	 * [server_delete_account description]
 	 * @author KBRmedia <http://gempixel.com>
