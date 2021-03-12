@@ -56,7 +56,7 @@ class Short extends App{
 	 * @var integer Minutes, Stats will not be updated when the same visitor clicks the same url for this amount of time
 	 * @since 4.0
 	 */	
-	private $anti_flood=30;	
+	private $anti_flood=0;	
 	/**
 	 * Reserved system aliases
 	 * @var array of reserved keywords used by the application. These cannot and should not be used in anyway!
@@ -733,15 +733,34 @@ class Short extends App{
 			// Set cookie to prevent flooding valid for XX minutes
 			Main::cookie("short_{$this->action}",'1',$this->anti_flood);
 		}
+		
+		$info = $this->db->get("stats", ["urlid" => $url->id, "ip" => Main::ip(), "cookie_day" => 1], ["limit" => 1]); 
+		$plan = $this->db->get("plans", ["id" => $user->planid], ["limit" => 1]);
+		$cookieon = "1";
 
 		if(!$this->db->get("stats", ["urlid" => $url->id, "ip" => Main::ip()], ["limit" => 1])){
 			$this->db->update("url",array("uniqueclick" => "uniqueclick+1"),array("id"=>":a"), array(":a"=>$url->id));
-			$plan = $this->db->get("plans", ["id" => $user->planid], ["limit" => 1]);
 			if($plan && $plan->credits_per_click)
 				$this->db->update("url",array("credits_earned" => "credits_earned+:cred"),array("id"=>":a"), array(":a"=>$url->id, ":cred"=>$plan->credits_per_click));
 				$this->db->update("user",array("credits" => "credits+:cred"),array("id"=>":a"), array(":a"=>$url->userid, ":cred"=>$plan->credits_per_click));
 				$this->db->update("user",array("credits" => "credits+:cred"),array("id"=>"1"), array(":cred"=>$plan->credits_per_click));
-		}		
+		}
+		else{
+		    if(!$info){
+		        $cookieon = "1";
+		    }
+		    elseif( date("d-m-Y H:i:s", strtotime("+".$plan->cookie_expires_in_days." day", "$info->date")) < "NOW()" ){
+		      //  when cookie has not Expired
+		      //  $this->db->update("stats",array("cookie_day" => "0"),array("urlid" => $url->id, "ip" => Main::ip()),array());
+		        $cookieon = "0";
+		    }
+		    else{
+		      //  When cookie has Expired
+		        $this->db->update("stats",array("cookie_day" => "0"),array("urlid" => $url->id, "ip" => Main::ip(), "cookie_day" => 1));
+		        $cookieon = "1";
+		    }
+		    
+		}
 
 		if($this->config["tracking"]=="1"){
 			// System Analytics
@@ -762,6 +781,7 @@ class Short extends App{
 					":urlid" => $url->id,
 					":urluserid" => $url->userid,
 					":date" => "NOW()",
+					":cookie_day" => $cookieon,
 					":country" => $this->country(),
 					":referer" => $referer,
 					":domain" => $domain,

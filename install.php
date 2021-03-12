@@ -564,6 +564,7 @@ $query[] = "CREATE TABLE IF NOT EXISTS `".trim($_POST["prefix"])."stats` (
   `urlid` bigint(20) NULL,
   `urluserid` bigint(20) NOT NULL DEFAULT '0',
   `date` datetime NULL,
+  `cookie_day` tinyint(1) NOT NULL DEFAULT '1',
   `ip` varchar(191) NULL,
   `country` varchar(191) NULL,
   `domain` varchar(191) NULL,

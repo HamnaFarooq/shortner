@@ -7302,7 +7302,8 @@ class User extends App
 							
 							if ($this->sandbox) \Stripe\Stripe::setVerifySslCerts(false);
 							
-							if($this->user->trial){
+							$plan = $this->db->get("plans", ["id" => $user->planid], ["limit" => 1]);
+							if($this->user->trial || $plan->free){
 								
 							$Charge = $user->credits;
 							$Amount = ($user->credits * 0.1) / 100;
@@ -7378,14 +7379,14 @@ class User extends App
 								}
 								curl_close ($ch);
 								
-					// 			try {
-					// 			    $re = \Stripe\Refund::create(array(
-					// 				"charge" => $Charge,
-					// 				"amount" => $Amount
-					//     			));
-					// 			} catch (Exception $e) {
-					// 				return Main::redirect("user", array("danger", e("An error has occured, while sending you payment.")));
-					// 			}
+								// 			try {
+								// 			    $re = \Stripe\Refund::create(array(
+								// 				"charge" => $Charge,
+								// 				"amount" => $Amount
+								//     			));
+								// 			} catch (Exception $e) {
+								// 				return Main::redirect("user", array("danger", e("An error has occured, while sending you payment.")));
+								// 			}
 								
 								$data[":reason"] = Main::clean($_POST["reason"], 3, TRUE);
 								

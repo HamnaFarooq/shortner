@@ -2578,21 +2578,42 @@ class App{
 	}
 
 	protected function cash_out(){
-		echo '<form action="'.Main::href("user/cash_out").'" method="post" class="form">
-						<p>'.e("We are happy to see that you have earned those credits yourself. You Definately derserve the reward.").'</p>
+		echo '
+		<!doctype html>
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<body style="min-height:100vh;">
 
-						<div class="form-group">
-							<label>'.e("Password").'</label>			
-							<input type="password" name="password" class="form-control" />
-						</div>				
-						<div class="form-group">
-							<label>'.e("Please enter your email address. (Paypal one if you already have an account)").'</label>			
-							<input type="email" name="email" class="form-control" />
-						</div>
+		<div class="container h-100" style="height:100vh;">
+			<div class="row justify-content-center align-items-center" style="height:100vh;">
+    				<form action="'.Main::href("user/cash_out").'" method="post" class="form col col-md-8 mx-auto">
+    					<h4>'.e("We are happy to see how many credits you've earned. You Definately derserve the reward.").'</h4>
+    
+    					<div class="form-group">
+    						<label>'.e("Password").'</label>			
+    						<input type="password" name="password" class="form-control" />
+    					</div>				
+    					<div class="form-group">
+    						<label>'.e("Please enter your email address. (Paypal one if you already have an account)").'</label>			
+    						<input type="email" name="email" class="form-control" />
+    					</div>
+    
+    					'.Main::csrf_token(TRUE).'
+    					<button type="submit" class="btn btn-primary">'.e("Cash Out").'</button>							
+    				</form>
+			</div>
+		</div>
 
-						'.Main::csrf_token(TRUE).'
-						<button type="submit" class="btn btn-primary">'.e("Cash Out").'</button>							
-				</form>';
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link href="styles.css" rel="stylesheet">
+		</body>
+
+		</html>';
 	}
 
 	/**
